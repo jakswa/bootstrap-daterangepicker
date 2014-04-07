@@ -671,7 +671,15 @@
 
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
             this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year());
-            this.updateCalendars();
+            /* This corrects faulty outsideClick() call in IE9.
+             * If this function runs before it, the e.target it receives will be the *detached*
+             * version of the element in IE9, causing the date picker to disappear when it
+             * should not (when <td> elements are clicked).
+             */
+            var jakeSelf = this;
+            setTimeout(function(){
+              jakeSelf.updateCalendars();
+            });
 
             endDate.endOf('day');
 
